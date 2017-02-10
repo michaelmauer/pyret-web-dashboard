@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import gapi from 'gapi-client';
 
@@ -12,13 +11,6 @@ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/res
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
 var SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
-
-/**
- *  On load, called to load the auth2 library and API client library.
- */
-function handleClientLoad() {
-  gapi.load('client:auth2', initClient);
-}
 
 /**
  *  Initializes the API client library and sets up sign-in state
@@ -101,23 +93,19 @@ function listFiles() {
   });
 }
 
-
 class App extends Component {
   render() {
     return (
-            <div>
-      <p>Drive API Quickstart</p>
-      <button onClick={handleAuthClick} id="authorize-button" >Authorize</button>
-      <button onClick={handleSignoutClick} id="signout-button" >Sign Out</button>
-      <pre id="content"></pre>
+      <div>
+        <p>Drive API Quickstart</p>
+        <button onClick={handleAuthClick} id="authorize-button" >Authorize</button>
+        <button onClick={handleSignoutClick} id="signout-button" >Sign Out</button>
+        <pre id="content"></pre>
       </div>
     );
   }
   componentDidMount() {
-    function start() {
-      gapi.load('client:auth2', initClient);
-    }
-    start();
+    gapi.load('client:auth2', initClient);
   }
 }
 
