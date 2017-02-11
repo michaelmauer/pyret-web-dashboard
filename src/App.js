@@ -39,6 +39,13 @@ function updateSigninStatus(isSignedIn) {
     // authorizeButton.style.display = 'none';
     // signoutButton.style.display = 'block';
     listFiles();
+    getAppDataFileID().then(function(fileID) {
+      saveAppData(fileID, {'test': 'test'}).then(function () {
+        getAppDataFileContent(fileID).then(function (r) {
+          document.getElementById('content').innerHTML += JSON.stringify(r);
+        });
+      });
+    });
   } else {
     // authorizeButton.style.display = 'block';
     // signoutButton.style.display = 'none';
@@ -90,6 +97,77 @@ function listFiles() {
     } else {
       appendPre('No files found.');
     }
+  });
+}
+
+function getAppDataFileID() {
+  return gapi.client.drive.files
+    .list({
+      q: 'name="pyret-teacher-dashboard.json"',
+      spaces: 'appDataFolder',
+      fields: '*'
+    }).then(
+      function (data) {
+        console.log(data);
+        return data.result.files[0].id;
+      }
+    );
+};
+
+function createAppDataFile() {
+  return gapi.client.drive.files
+    .create({
+      resource: {
+        name: 'pyret-teacher-dashboard.json',
+        parents: ['appDataFolder']
+      },
+      fields: 'id'
+    }).then(function (data) {
+      return {
+        fileId: data.result.id
+      };
+    });
+};
+
+function getAppDataFileContent(fileId) {
+  return gapi.client.drive.files
+    .get({
+      fileId: fileId,
+      // Download a file — files.get with alt=media file resource
+      alt: 'media'
+    }).then(function (data) {
+      return {
+        fileId: fileId,
+        appData: data.result
+      };
+    });
+};
+
+function saveAppData(fileId, appData) {
+  return gapi.client.request({
+    path: '/upload/drive/v3/files/' + fileId,
+    method: 'PATCH',
+    params: {
+      uploadType: 'media'
+    },
+    body: JSON.stringify(appData)
+  });
+};
+
+function updateAppDataParams (key, value) {
+  getAppDataFileID().then(function(fileID) {
+    getAppDataFileContent(fileID).then(function(resp) {
+      var data = resp.appData;
+      data[key] = value;
+      saveAppData(fileID, data).then(function(resp) {
+        getAppDataFileContent(fileID).then(function(resp) {
+          console.log(resp);
+        });
+      });
+    });
+  }, function(reason) {
+    console.log('error, creating');
+    createAppDataFile();
   });
 }
 
