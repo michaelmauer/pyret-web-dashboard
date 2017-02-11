@@ -1,41 +1,58 @@
 import React, { Component } from 'react';
-import './App.css';
+import ReactDOM from 'react-dom';
 import GoogleAPI from './GoogleAPI.js';
 import {CLIENT_ID, DISCOVERY_DOCS, SCOPES} from './config.js';
+import File from './File';
+
 
 class App extends Component {
   constructor() {
     super();
     this.api = new GoogleAPI(CLIENT_ID, DISCOVERY_DOCS, SCOPES);
   }
+  componentWillMount() {
+    this.setState({signedInClass: '', signedOutClass: 'hidden'});
+  }
 
   render = () => {
     return (
       <div>
-        <p>Drive API Quickstart</p>
-        <button onClick={this.handleSignInClick} id="authorize-button" >Authorize</button>
-        <button onClick={this.handleSignOutClick} id="signout-button" >Sign Out</button>
-        <div id="content"></div>
+        <div >
+          <h1>Pyret Web Dashboard</h1>
+          <button className={this.state.signedInClass} onClick={this.handleSignInClick} id="authorize-button" >Authorize</button>
+          <button className={this.state.signedOutClass} onClick={this.handleSignOutClick} id="signout-button" >Sign Out</button>
+          <div id="inject"></div>
+        </div>
       </div>
     );
   }
 
   handleSignInClick = (event) => {
-    console.log(this);
-    this.api.signIn().then(this.listFiles);
+    this.api.signIn().then(() => {
+      this.setState({signedInClass: 'hidden', signedOutClass: ''});
+      this.listFiles();
+    });
   }
 
   handleSignOutClick = (event) => {
-    this.api.signOut();
-    document.getElementById('content').innerHTML = '';
+    this.api.signOut().then(() => {
+      document.getElementById('inject').innerHTML = '';
+      this.setState({signedInClass: '', signedOutClass: 'hidden'});
+    });
   }
 
   listFiles = () => {
-    const content = document.getElementById('content');
+    const inject = document.getElementById('inject');
 
-    this.api.getFiles().then((resp) => {
-      console.log(resp.result.files);
-      content.innerHTML = JSON.stringify(resp.result.files);
+    this.api.getPyretFiles().then((resp) => {
+      var files = resp.result.files.map((f) => {return <File key={f.id} id={f.id} name={f.name} />});
+      ReactDOM.render(
+        <div>
+          <h2>Recent Files:</h2>
+          {files}
+        </div>,
+        inject
+        );
     });
   }
 }

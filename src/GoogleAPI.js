@@ -6,11 +6,13 @@ class GoogleAPI {
      *  listeners.
      */
     constructor(client_id, discovery_docs, scopes) {
-      return gapi.load('client:auth2', () => {
+      gapi.load('client:auth2', () => {
         return gapi.client.init({
           discoveryDocs: discovery_docs,
           clientId: client_id,
           scope: scopes
+        }).then(() => {
+          console.log('initiated');
         });
       });
     }
@@ -34,8 +36,19 @@ class GoogleAPI {
      */
     getFiles = () => {
       return gapi.client.drive.files.list({
-        'pageSize': 10,
-        'fields': "nextPageToken, files(id, name)"
+        pageSize: 10,
+        fields: "nextPageToken, files(id, name)"
+      });
+    }
+
+    /**
+     * list files w/ extension .arr.
+     */
+    getPyretFiles = () => {
+      return gapi.client.drive.files.list({
+        pageSize: 10,
+        fields: "nextPageToken, files(id, name)",
+        q: 'fileExtension="arr"'
       });
     }
 
