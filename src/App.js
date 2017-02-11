@@ -6,12 +6,9 @@ class App extends Component {
   constructor() {
     super();
     this.api = new GoogleAPI();
-
-    // This binding is necessary to make `this` work in the callback
-    this.handleSignInClick = this.handleSignInClick.bind(this);
-    this.handleSignOutClick = this.handleSignOutClick.bind(this);
   }
-  render() {
+
+  render = () => {
     return (
       <div>
         <p>Drive API Quickstart</p>
@@ -21,20 +18,25 @@ class App extends Component {
       </div>
     );
   }
-  handleSignInClick(event) {
+
+  handleSignInClick = (event) => {
     console.log(this);
-    this.api.signIn();
+    this.api.signIn().then(this.listFiles);
   }
-  handleSignOutClick(event) {
+
+  handleSignOutClick = (event) => {
     this.api.signOut();
     document.getElementById('content').innerHTML = '';
   }
 
-  // componentDidMount() {
-  //   const content = document.getElementById('content');
-  //   var files = this.api.getFiles();
-  //   content.appendChild(files);
-  // }
+  listFiles = () => {
+    const content = document.getElementById('content');
+
+    this.api.getFiles().then((resp) => {
+      console.log(resp.result.files);
+      content.innerHTML = JSON.stringify(resp.result.files);
+    });
+  }
 }
 
 export default App;
