@@ -5,36 +5,14 @@ class GoogleAPI {
      *  Initializes the API client library and sets up sign-in state
      *  listeners.
      */
-    constructor() {
-      // Client ID and API key from the Developer Console
-      const CLIENT_ID = '616482134011-3hnr36kvc6jeh1dfojv3gblj8bu7i6b7.apps.googleusercontent.com';
-
-      // Array of API discovery doc URLs for APIs used by the quickstart
-      const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
-
-      // Authorization scopes required by the API; multiple scopes can be
-      // included, separated by spaces.
-      const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
-
+    constructor(client_id, discovery_docs, scopes) {
       return gapi.load('client:auth2', () => {
         return gapi.client.init({
-          discoveryDocs: DISCOVERY_DOCS,
-          clientId: CLIENT_ID,
-          scope: SCOPES
+          discoveryDocs: discovery_docs,
+          clientId: client_id,
+          scope: scopes
         });
       });
-    }
-
-    /**
-     *  Called when the signed in status changes, to update the UI
-     *  appropriately. After a sign-in, the API is called.
-     */
-    updateSigninStatus = (isSignedIn) => {
-      if (isSignedIn) {
-        return true;
-      } else {
-        return false;
-      }
     }
 
     /**

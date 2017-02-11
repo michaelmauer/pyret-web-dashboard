@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import GoogleAPI from './GoogleAPI.js';
+import {CLIENT_ID, DISCOVERY_DOCS, SCOPES} from './config.js';
 
 class App extends Component {
   constructor() {
     super();
-    this.api = new GoogleAPI();
+    this.api = new GoogleAPI(CLIENT_ID, DISCOVERY_DOCS, SCOPES);
   }
 
   render = () => {
