@@ -19,7 +19,6 @@ class NameForm extends React.Component {
   handleSubmit(event) {
     console.log('A name was submitted: ' + this.state.value);
     event.preventDefault();
-    console.log(getAppDataFileID());
   }
 
   render() {
