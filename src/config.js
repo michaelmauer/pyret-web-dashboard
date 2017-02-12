@@ -10,7 +10,7 @@ export const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/dri
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-export const SCOPES = 'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.appfolder https://www.googleapis.com/auth/drive.file';
+export const SCOPES = 'https://www.googleapis.com/auth/drive';
 
 // File extension of code files for this app.
 export const FILE_EXT = 'arr';

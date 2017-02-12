@@ -1,12 +1,21 @@
+.cf:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 body, html {
-    background: linear-gradient(to bottom right, hsla(220, 100%, 20%, 1), hsla(260, 100%, 50%, 1)), no-repeat center center fixed;
-    background-size: cover;
     height: 100%;
     width: 100%;
 }
 
-body, html, p, h1, h2, h3, h4, button, input, div {
-    color: white;
+html {
+    background: linear-gradient(to bottom right, #00245E, #62809A), no-repeat center center fixed;
+    background-size: cover;
+}
+
+body, html, p, h1, h2, h3, h4, button, input, div, i {
+    color: #333;
     padding: 0;
     margin: 0;
     font-family: 'Lato', sans-serif;
@@ -15,30 +24,58 @@ body, html, p, h1, h2, h3, h4, button, input, div {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
-#wrap {
-    position: relative;
+#header {
+    background: #fff;
+    height: 56pt;
+    padding: 0 16pt;
 }
 
-#root {
-    width: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.container {
+    max-width: 1024px;
+    margin: 0px auto;
+}
+
+.logo-text {
+    font-size: 1.25rem;
+    float: left;
+    margin: 0;
+    padding: 0;
+    line-height: 56pt;
+}
+
+#header .auth-button-wrapper {
+    float: right;
+    line-height: 56pt;
+}
+
+#header .auth-button {
+    margin: 0;
+}
+
+.inverted {
+    color: white;
+    padding-top: 16pt;
+}
+
+.body-wrap, #root {
+}
+
+.content-wrap {
     text-align: center;
 }
 
 .fast-spin {
-  -webkit-animation: fa-spin 500ms infinite linear;
-  animation: fa-spin 500ms infinite linear;
+    color: white;
+    -webkit-animation: fa-spin 500ms infinite linear;
+    animation: fa-spin 500ms infinite linear;
 }
 
 h1, h2 {
     font-size: 2rem;
-    padding-bottom: 30px;
+    padding-bottom: 24pt;
 }
 
 h2 {
@@ -46,40 +83,63 @@ h2 {
     font-size: 1rem;
 }
 
-button {
-    background:  none;
-    border: 1px solid white;
+.form {
+    width: 100px;
+    margin: 0 3px 24pt 0;
+    padding: 10px;
     border-radius: 5px;
-    padding: 10px 20px;
-    margin: 0 30px 30px 30px;
+    border: 2px solid #333;
+    background: none;
+    display: inline-block;
 }
-button:hover {
+
+.file-option {
+    background: rgba(255,255,255,.95);
+    display: inline-block;
+    padding: 24pt;
+    margin: 0 24pt 24pt 24pt;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border-radius: 5px;
+}
+
+.file-option h2 {
+    color: #333;
+}
+.file-option input {
+    color: black;
+}
+
+button, .button {
+    background: none;
+    border: 2px solid #333;
+    border-radius: 5px;
+    padding: 8pt 24pt;
+    color: #333;
+}
+
+button:hover, .button:hover {
     background: #fff;
     color: #333;
     cursor: pointer;
 }
 
 .file {
-    opacity: .5;
-    display: inline-block;
-    background: #fff;
-    border: 1px solid #fff;
+    background: rgba(53,135,255,.2);
     border-radius: 5px;
-    padding: 15px;
-    margin: 0px 30px 30px 30px;
+    padding: 8pt;
+    margin: 0 0 16pt 0;
 }
 
 .file:hover {
-    opacity: 1;
+    background: rgba(53,135,255,.5);
     cursor: pointer;
 }
 
 .file i, .file p {
-    color: #333;
+    display: inline-block;
 }
 
 .file i {
-    display: inline-block;
-    font-size: 2rem;
-    padding: 15px;
+    margin-right: 5pt;
 }

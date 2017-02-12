@@ -36,66 +36,67 @@ class GoogleAPI {
       return gapi.auth2.getAuthInstance().signOut();
     }
 
-    /**
-     * list files.
-     */
-    getFiles = () => {
-      return gapi.client.drive.files.list({
-        pageSize: 10,
-        fields: "nextPageToken, files(id, name)"
+    createAppFolder = (appName) => {
+      return gapi.client.drive.files.create({
+        resource: {
+          'name' : appName,
+          'mimeType' : 'application/vnd.google-apps.folder'
+        }
       });
+    }
+
+    getAppFolderID = (appName) => {
+      return gapi.client.drive.files.list({
+        q: 'not trashed and mimeType="application/vnd.google-apps.folder" and name ="' + appName + '"'
+      });
+    }
+
+    createNewFile = (parentFolderId, fileName) => {
+      var reqOpts = {
+        'path': '/drive/v3/files',
+        'method': 'POST',
+        'body': {
+          'parents': [parentFolderId],
+          'mimeType': 'text/plain',
+          'name': fileName
+        }
+      };
+      return gapi.client.request(reqOpts);
     }
 
     /**
      * list files w/ extension [ext].
      */
-    getFilesByExt = (ext) => {
+    getRecentFilesByExt = (ext) => {
       return gapi.client.drive.files.list({
-        pageSize: 10,
-        fields: "nextPageToken, files(id, name)",
-        q: 'fileExtension="' + ext + '"'
+        fields: "files(id, name)",
+        q: 'not trashed and fileExtension="' + ext + '"',
+        pageSize: 6,
       });
     }
 
     getAppDataFileID = (appDataFilename) => {
-      return gapi.client.drive.files
-        .list({
-          q: 'name="' + appDataFilename + '"',
-          spaces: 'appDataFolder',
-          fields: '*'
-        }).then((data) => {
-            return data.result.files[0].id;
-          }
-        );
+      return gapi.client.drive.files.list({
+        q: 'not trashed and name="' + appDataFilename + '"',
+        spaces: 'appDataFolder'
+      });
     }
 
     createAppDataFile = (appDataFilename) => {
-      return gapi.client.drive.files
-        .create({
-          resource: {
-            name: appDataFilename,
-            parents: ['appDataFolder']
-          },
-          fields: 'id'
-        }).then((data) => {
-          return {
-            fileId: data.result.id
-          };
-        });
+      return gapi.client.drive.files.create({
+        resource: {
+          name: appDataFilename,
+          parents: ['appDataFolder']
+        }
+      });
     }
 
     getAppDataFileContent = (fileId) => {
-      return gapi.client.drive.files
-        .get({
-          fileId: fileId,
-          // Download a file — files.get with alt=media file resource
-          alt: 'media'
-        }).then((data) => {
-          return {
-            fileId: fileId,
-            appData: data.result
-          };
-        });
+      return gapi.client.drive.files.get({
+        fileId: fileId,
+        // Download a file — files.get with alt=media file resource
+        alt: 'media'
+      });
     }
 
     saveAppData = (fileId, appData) => {
@@ -106,22 +107,6 @@ class GoogleAPI {
           uploadType: 'media'
         },
         body: JSON.stringify(appData)
-      });
-    }
-
-    updateAppDataParams = (key, value) => {
-      this.getAppDataFileID().then((fileID) => {
-        this.getAppDataFileContent(fileID).then((resp) => {
-          const data = resp.appData;
-          data[key] = value;
-          this.saveAppData(fileID, data).then((resp) => {
-            // this.getAppDataFileContent(fileID).then((resp) => {
-              // console.log(resp);
-            // });
-          });
-        });
-      }, (reason) => {
-        this.createAppDataFile();
       });
     }
 }

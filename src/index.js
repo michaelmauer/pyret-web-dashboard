@@ -4,8 +4,6 @@ import App from './App';
 import './Index.css';
 
 ReactDOM.render(
-  <div>
-    <App />
-  </div>,
+  <App />,
   document.getElementById('root')
 );
