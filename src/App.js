@@ -8,10 +8,21 @@ import File from './File';
 class App extends Component {
   constructor() {
     super();
-    this.api = new GoogleAPI(CLIENT_ID, DISCOVERY_DOCS, SCOPES);
+    this.api = new GoogleAPI();
+
+    this.api.load(CLIENT_ID, DISCOVERY_DOCS, SCOPES).then(this.apiLoaded);
   }
-  componentWillMount() {
+
+  componentWillMount = () => {
+    localStorage.setItem('gapi_loaded', false);
     this.setState({signedInClass: '', signedOutClass: 'hidden'});
+  }
+
+  apiLoaded = () => {
+    if (this.api.isSignedIn()) {
+      this.listFiles();
+      this.setState({signedInClass: 'hidden', signedOutClass: ''});
+    }
   }
 
   render = () => {

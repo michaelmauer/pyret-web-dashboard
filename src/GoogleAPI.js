@@ -1,20 +1,23 @@
 import gapi from 'gapi-client';
 
 class GoogleAPI {
-    /**
-     *  Initializes the API client library and sets up sign-in state
-     *  listeners.
-     */
-    constructor(client_id, discovery_docs, scopes) {
-      gapi.load('client:auth2', () => {
-        return gapi.client.init({
-          discoveryDocs: discovery_docs,
-          clientId: client_id,
-          scope: scopes
-        }).then(() => {
-          console.log('initiated');
+    load = (clientId, discoveryDocs, scope) => {
+      var p = new Promise(function(resolve, reject) {
+        gapi.load('client:auth2', function () {
+          return gapi.client.init({
+            discoveryDocs: discoveryDocs,
+            clientId: clientId,
+            scope: scope
+          }).then(function () {
+            resolve();
+          });
         });
       });
+      return p;
+    }
+
+    isSignedIn = () => {
+      return gapi.auth2.getAuthInstance().isSignedIn.get();
     }
 
     /**
