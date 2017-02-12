@@ -14,19 +14,8 @@ body, html, p, h1, h2, h3, h4, button, input, div {
     font-size: 1rem;
 }
 
-.invisible {
-    opacity: 0;
-    transition: all 500ms linear;
-}
-
 .hidden {
     display: none;
-    transition: all 500ms linear;
-}
-
-.visible {
-    opacity: 1;
-    transition: all 500ms linear;
 }
 
 #wrap {
