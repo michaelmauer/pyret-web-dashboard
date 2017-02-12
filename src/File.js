@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import {EDITOR_REDIRECT_URL} from './config.js';
+
+
 class File extends Component {
   render = () => {
     return (
@@ -10,7 +13,6 @@ class File extends Component {
     );
   }
   handleClick = () => {
-    // console.log(this.props.id);
     window.open("http://code.pyret.org/editor#program=" + this.props.id,'_newtab');
   }
 }

@@ -1,8 +1,11 @@
 import gapi from 'gapi-client';
 
 class GoogleAPI {
+    /**
+     *  Load the client library. Return a promise to allow .then() in caller
+     */
     load = (clientId, discoveryDocs, scope) => {
-      var p = new Promise(function(resolve, reject) {
+      return new Promise(function(resolve, reject) {
         gapi.load('client:auth2', function () {
           return gapi.client.init({
             discoveryDocs: discoveryDocs,
@@ -13,7 +16,6 @@ class GoogleAPI {
           });
         });
       });
-      return p;
     }
 
     isSignedIn = () => {
@@ -45,34 +47,33 @@ class GoogleAPI {
     }
 
     /**
-     * list files w/ extension .arr.
+     * list files w/ extension [ext].
      */
-    getPyretFiles = () => {
+    getFilesByExt = (ext) => {
       return gapi.client.drive.files.list({
         pageSize: 10,
         fields: "nextPageToken, files(id, name)",
-        q: 'fileExtension="arr"'
+        q: 'fileExtension="' + ext + '"'
       });
     }
 
-    getAppDataFileID = () => {
+    getAppDataFileID = (appDataFilename) => {
       return gapi.client.drive.files
         .list({
-          q: 'name="pyret-teacher-dashboard.json"',
+          q: 'name="' + appDataFilename + '"',
           spaces: 'appDataFolder',
           fields: '*'
         }).then((data) => {
-            // console.log(data);
             return data.result.files[0].id;
           }
         );
     }
 
-    createAppDataFile = () => {
+    createAppDataFile = (appDataFilename) => {
       return gapi.client.drive.files
         .create({
           resource: {
-            name: 'pyret-teacher-dashboard.json',
+            name: appDataFilename,
             parents: ['appDataFolder']
           },
           fields: 'id'
@@ -98,7 +99,7 @@ class GoogleAPI {
     }
 
     saveAppData = (fileId, appData) => {
-      return gapi.client.request({
+      return gapi.client.drive.files.update({
         path: '/upload/drive/v3/files/' + fileId,
         method: 'PATCH',
         params: {
@@ -108,7 +109,7 @@ class GoogleAPI {
       });
     }
 
-    updateAppDataParams  = (key, value) => {
+    updateAppDataParams = (key, value) => {
       this.getAppDataFileID().then((fileID) => {
         this.getAppDataFileContent(fileID).then((resp) => {
           const data = resp.appData;

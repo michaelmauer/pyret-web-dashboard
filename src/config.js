@@ -1,3 +1,6 @@
+// App name in *Title Case*.
+export const APP_NAME = 'Pyret';
+
 // Client ID and API key from the Developer Console
 export const CLIENT_ID = '616482134011-3hnr36kvc6jeh1dfojv3gblj8bu7i6b7.apps.googleusercontent.com';
 
@@ -7,3 +10,14 @@ export const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/dri
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
 export const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+
+// File extension of code files for this app.
+export const FILE_EXT = 'arr';
+
+// File name of metadata on Google Drive.
+// Not user accessible.
+export const APP_DATA_FILENAME = 'pyret-app-data.json';
+
+// Redirect url for code IDE editor.
+// Format should be 'http://your.company.com/editor?gdrivefileid='
+export const EDITOR_REDIRECT_URL = 'http://code.pyret.org/editor#program=';
