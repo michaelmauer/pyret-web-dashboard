@@ -14,8 +14,19 @@ body, html, p, h1, h2, h3, h4, button, input, div {
     font-size: 1rem;
 }
 
+.invisible {
+    opacity: 0;
+    transition: all 500ms linear;
+}
+
 .hidden {
     display: none;
+    transition: all 500ms linear;
+}
+
+.visible {
+    opacity: 1;
+    transition: all 500ms linear;
 }
 
 #wrap {
@@ -29,6 +40,11 @@ body, html, p, h1, h2, h3, h4, button, input, div {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+}
+
+.fast-spin {
+  -webkit-animation: fa-spin 500ms infinite linear;
+  animation: fa-spin 500ms infinite linear;
 }
 
 h1, h2 {

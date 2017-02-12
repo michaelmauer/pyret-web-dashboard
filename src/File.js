@@ -12,6 +12,7 @@ class File extends Component {
         </div>
     );
   }
+
   handleClick = () => {
     window.open("http://code.pyret.org/editor#program=" + this.props.id,'_newtab');
   }

@@ -13,21 +13,23 @@ class App extends Component {
   }
 
   componentWillMount = () => {
-    this.setState({signedInClass: '', signedOutClass: 'hidden'});
+    this.setState({spinnerClass: 'visible', apiLoadedClass: 'invisible', signedInClass: 'visible', signedOutClass: 'hidden'});
   }
 
   apiLoaded = () => {
+    this.setState({spinnerClass: 'hidden', apiLoadedClass: 'visible'});
     if (this.api.isSignedIn()) {
       this.listFiles();
-      this.setState({signedInClass: 'hidden', signedOutClass: ''});
+      this.setState({signedInClass: 'hidden', signedOutClass: 'visible'});
     }
   }
 
   render = () => {
     return (
       <div>
-        <div >
-          <h1>{APP_NAME} Web Dashboard</h1>
+        <h1>{APP_NAME} Web Dashboard</h1>
+        <i id='loading-spinner' className={"fa fa-circle-o-notch fast-spin fa-3x fa-fw " + this.state.spinnerClass}></i>
+        <div className={this.state.apiLoadedClass}>
           <button className={this.state.signedInClass} onClick={this.handleSignInClick} id="authorize-button" >Authorize</button>
           <button className={this.state.signedOutClass} onClick={this.handleSignOutClick} id="signout-button" >Sign Out</button>
           <div id="inject"></div>
@@ -38,7 +40,7 @@ class App extends Component {
 
   handleSignInClick = (event) => {
     this.api.signIn().then(() => {
-      this.setState({signedInClass: 'hidden', signedOutClass: ''});
+      this.setState({signedInClass: 'hidden', signedOutClass: 'visible'});
       this.listFiles();
     });
   }
@@ -46,7 +48,7 @@ class App extends Component {
   handleSignOutClick = (event) => {
     this.api.signOut().then(() => {
       document.getElementById('inject').innerHTML = '';
-      this.setState({signedInClass: '', signedOutClass: 'hidden'});
+      this.setState({signedInClass: 'visible', signedOutClass: 'hidden'});
     });
   }
 
